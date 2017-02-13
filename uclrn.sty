@@ -1,8 +1,12 @@
 % uclrn.sty is a LaTeX package to show a picture on the cover produced by \maketitle.
 % By Renzo De Nardi <renzodenardi@gmail.com>. Free software, no warranty of any kind.
+%
+% Edited for SIGCHI compatibility by Steve Dodier-Lazaro <sidnioulz@gmail.com>
 % 
 % Version history:
 % 0.1: first release
+% <fork by Steve Dodier-Lazaro>
+% 0.2: compatible with the SIGCHI template for CHI 2017
 % 
 % -----------------------------------------------------------------------------
 \PassOptionsToPackage{absolute}{textpos}
@@ -23,25 +27,35 @@
 \newcommand\rnnumber[1]{\renewcommand\@rnnumber{#1}}
 \newcommand\@rnnumber{\@latex@error{Variable \noexpand \rnnumber not defined}\@ehc}
 
+\newcommand\rnauthor[1]{\renewcommand\@rnauthor{#1}}
+\newcommand\@rnauthor{\@latex@error{Variable \noexpand \rnauthor not defined}\@ehc}
+\newcommand\fullauthor[1]{\renewcommand\@fullauthor{#1}}
+\newcommand\@fullauthor{\@latex@error{Variable \noexpand \fullauthor not defined}\@ehc}
+
+\newcommand\rntitle[1]{\renewcommand\@rntitle{#1}}
+\newcommand\@rntitle{\@latex@error{Variable \noexpand \rntitle not defined}\@ehc}
+\newcommand\fulltitle[1]{\renewcommand\@fulltitle{#1}}
+\newcommand\@fulltitle{\@latex@error{Variable \noexpand \fulltitle not defined}\@ehc}
+
 % get the full size of the page 
 \newlength{\fullpaperwidth}
-\setlength{\fullpaperwidth}{\paperwidth}
-\addtolength{\fullpaperwidth}{10mm}
+\setlength{\fullpaperwidth}{9in}
 
 % first page as per word template:
 % http://www.cs.ucl.ac.uk/fileadmin/UCL-CS/research/Research_Student_Information/RNCoverpage.doc
-\renewcommand\maketitle{	
+\renewcommand\maketitle{
+    \onecolumn
 		
      	% get rid of page number
 		\thispagestyle{empty}
 
 		% ucl header from image 
 		\begin{textblock*}{\fullpaperwidth}(-10mm,0mm)
-      		\includegraphics[width=\fullpaperwidth]{ucl.jpg}
+      		\includegraphics[width=\fullpaperwidth]{ucl.pdf}
 		\end{textblock*}
 		
 		% department text
-		\begin{textblock*}{40mm}(10mm,10mm)
+		\begin{textblock*}{140mm}(10mm,10mm)
       		{\setlength{\parindent}{0cm}
       		\fontfamily{phv}\selectfont
       		\fontsize{12pt}{14pt}\selectfont
@@ -59,14 +73,14 @@
 		    {\bfseries \LARGE Research Note\par}
 		    {RN/\@rnnumber}
 		    \vskip 3em
-		    {\bfseries \LARGE \@title \par}
+		    {\bfseries \LARGE \@fulltitle \par}
 			\vskip 1em
 			{\large \@date \par} 
 			\vskip 5em
 			{\large
 				\lineskip .75em%
 				\begin{tabular}[t]{c}%
-				\@author
+				\@fullauthor
 				\end{tabular}\par%
 			}			
 		\end{center}	
@@ -77,7 +91,6 @@
 	\global\let\@thanks\@empty
 	\global\let\@date\@empty
 	\global\let\title\relax
-	\global\let\author\relax
 	\global\let\date\relax
 	\global\let\and\relax
 }
@@ -86,8 +99,8 @@
 
 % headers and footers
 \fancyhead{} % clear all header fields
-\fancyhead[L]{\@title}	
-\fancyhead[R]{\@author}
+\fancyhead[L]{\@rntitle}	
+\fancyhead[R]{\@rnauthor}
 \fancyfoot{} % clear all footer fields
 \fancyfoot[R]{\thepage}
 \fancyfoot[L]{RN/\@rnnumber}
@@ -109,6 +122,7 @@
       \end{center}}
      {\par\vfil\null
       \clearpage\setcounter{page}{1}
+	\twocolumn
 }
 
 
